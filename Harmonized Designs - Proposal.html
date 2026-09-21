@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmonized Designs · Social Media Proposal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #faf8f5;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      color: #2e2e2e;
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .proposal {
+      max-width: 1200px;
+      width: 100%;
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      padding: 3rem 3.5rem;
+      border: 1px solid #e8e2da;
+    }
+
+    /* header with logo */
+    .logo-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      border-bottom: 2px solid #e3dbd0;
+      padding-bottom: 2rem;
+    }
+
+    .logo-header img {
+      max-height: 80px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    .logo-header h1 {
+      font-size: 2.6rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: #1f1f1f;
+      line-height: 1.2;
+    }
+
+    .logo-header h1 span {
+      font-weight: 300;
+      color: #9b8c7a;
+      display: block;
+      font-size: 1.1rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin: 2.5rem 0 1rem;
+      color: #1f1f1f;
+      border-left: 6px solid #b9aa98;
+      padding-left: 1.2rem;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin: 2rem 0 0.8rem;
+      color: #3a3a3a;
+    }
+
+    h4 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.5rem;
+      color: #4b3f33;
+      letter-spacing: 0.3px;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: #3f3f3f;
+    }
+
+    .objective-box {
+      background: #f6f2ec;
+      padding: 1.8rem 2rem;
+      border-radius: 20px;
+      margin: 1.5rem 0 2rem;
+      border-left: 6px solid #b9aa98;
+    }
+
+    .objective-box p {
+      margin-bottom: 0;
+      font-size: 1.05rem;
+      color: #2b2b2b;
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      background: #fcfaf8;
+      padding: 1.5rem 1.8rem;
+      border-radius: 20px;
+      border: 1px solid #e6dfd6;
+    }
+
+    .card h4 {
+      margin-top: 0;
+      color: #1f1f1f;
+      font-weight: 600;
+    }
+
+    .budget-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.8rem 0;
+      font-size: 0.98rem;
+      background: #fdfbf9;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .budget-table th {
+      background: #d9cfc2;
+      color: #1f1f1f;
+      font-weight: 600;
+      padding: 0.9rem 1rem;
+      text-align: left;
+    }
+
+    .budget-table td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid #ede8e2;
+      color: #2e2e2e;
+    }
+
+    .budget-table tr:last-child td {
+      border-bottom: none;
+      font-weight: 600;
+      background: #f4efe9;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #d9cfc2;
+      color: #1f1f1f;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      margin-right: 0.5rem;
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .package-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e3dbd0;
+      transition: all 0.15s;
+    }
+
+    .package-card.premium {
+      border: 2px solid #b9aa98;
+      background: #fefcf9;
+      position: relative;
+    }
+
+    .package-card .price {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #1f1f1f;
+      margin: 0.5rem 0 0.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .package-card .annual {
+      font-size: 0.95rem;
+      color: #7b6e60;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px dashed #d9cfc2;
+      padding-bottom: 1rem;
+    }
+
+    .package-card ul {
+      list-style: none;
+      margin: 1.2rem 0;
+    }
+
+    .package-card li {
+      padding: 0.3rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: #2b2b2b;
+    }
+
+    .package-card li::before {
+      content: "✓";
+      color: #9b8c7a;
+      font-weight: 700;
+      width: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .package-card.premium li::before {
+      content: "★";
+      color: #b9aa98;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.8rem 0;
+      font-size: 0.92rem;
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .comparison-table th {
+      background: #e8dfd6;
+      font-weight: 600;
+      padding: 0.8rem 1rem;
+      text-align: center;
+    }
+
+    .comparison-table th:first-child {
+      text-align: left;
+    }
+
+    .comparison-table td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid #f0ebe5;
+      text-align: center;
+      color: #3a3a3a;
+    }
+
+    .comparison-table td:first-child {
+      text-align: left;
+      font-weight: 500;
+      color: #1f1f1f;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .highlight {
+      background: #f6f2ec;
+      font-weight: 600;
+    }
+
+    .two-col-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .two-col-list ul {
+      list-style: none;
+    }
+
+    .two-col-list li {
+      padding: 0.25rem 0;
+      display: flex;
+      gap: 0.6rem;
+      align-items: baseline;
+      font-size: 0.96rem;
+    }
+
+    .two-col-list li::before {
+      content: "—";
+      color: #b9aa98;
+      font-weight: 600;
+    }
+
+    .phase-timeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .phase {
+      flex: 1 1 180px;
+      background: #f6f2ec;
+      padding: 1.3rem 1.2rem;
+      border-radius: 18px;
+      border-left: 5px solid #b9aa98;
+    }
+
+    .phase h5 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #1f1f1f;
+    }
+
+    .phase p {
+      font-size: 0.9rem;
+      margin: 0;
+      color: #4a4038;
+    }
+
+    .separator {
+      height: 1px;
+      background: linear-gradient(90deg, #e3dbd0, transparent);
+      margin: 2.5rem 0;
+    }
+
+    .footnote {
+      font-size: 0.88rem;
+      color: #7b6e60;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    @media (max-width: 850px) {
+      .proposal {
+        padding: 2rem 1.5rem;
+      }
+      .grid-2col, .package-grid, .two-col-list {
+        grid-template-columns: 1fr;
+      }
+      .logo-header h1 {
+        font-size: 1.8rem;
+      }
+      .logo-header img {
+        max-height: 60px;
+      }
+      h2 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="proposal">
+    <!-- Logo & title -->
+    <div class="logo-header">
+      <img src="https://harmonizeddesignsjewelry.com/assets/uploads/logo/8195056armonizedesign-01178726666955.png" alt="Harmonized Designs logo placeholder" style="background:#f0ebe5; padding:6px 10px; border-radius:12px;" />
+      <h1>
+        <span>Social Ads Proposal</span>
+      </h1>
+    </div>
+
+    <!-- Objective -->
+    <div class="objective-box">
+      <p><strong>Objective:</strong> Build a measurable digital marketing system that increases qualified traffic, builds brand awareness, identifies winning products/audiences, and improves the path from social → website → engagement → purchase. Heavy focus on Facebook, Instagram & TikTok with continuous website behavior analysis.</p>
+    </div>
+
+    <!-- How it works -->
+    <h2>How the program works</h2>
+    <div class="grid-2col">
+      <div class="card">
+        <h4>1. Paid Social Advertising</h4>
+        <p>Facebook · Instagram · TikTok<br>Testing products, formats, images, videos, audiences, messaging, CTAs, objectives, retargeting.</p>
+      </div>
+      <div class="card">
+        <h4>2. Website Behaviour & Performance</h4>
+        <p>GA4, conversion tracking, heatmaps, traffic analysis, product-page engagement, add-to-cart, checkout & purchase activity.</p>
+      </div>
+    </div>
+
+    <!-- Initial testing budget -->
+    <h3>Initial testing phase</h3>
+    <p>Recommended starting ad budget: <strong>$500/month</strong> (paid directly to platforms, separate from management fee). Example allocation:</p>
+    <table class="budget-table">
+      <tr><th>Advertising area</th><th>Allocation</th></tr>
+      <tr><td>Product / Lifestyle Ads</td><td>$150</td></tr>
+      <tr><td>Video / Reels / TikTok</td><td>$125</td></tr>
+      <tr><td>Best-Seller / Product Ads</td><td>$100</td></tr>
+      <tr><td>Custom Jewelry</td><td>$75</td></tr>
+      <tr><td>Retargeting</td><td>$50</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>$500</strong></td></tr>
+    </table>
+    <p class="footnote">Budget shifts dynamically toward top-performing campaigns.</p>
+
+    <!-- Phases -->
+    <h3>Months 1–12: Phased approach</h3>
+    <div class="phase-timeline">
+      <div class="phase"><h5>Phase 1 · Discover</h5><p>Months 1–3: Traffic, testing, data collection</p></div>
+      <div class="phase"><h5>Phase 2 · Optimize</h5><p>Months 4–6: Identify winning products, audiences, creatives</p></div>
+      <div class="phase"><h5>Phase 3 · Expand</h5><p>Months 7–9: Increase testing, expand successful strategies</p></div>
+      <div class="phase"><h5>Phase 4 · Scale</h5><p>Months 10–12: Focus budget on proven opportunities, continuous testing</p></div>
+    </div>
+
+    <!-- Package 1 -->
+    <h2>Package 1 · Social Ads Growth — 12 months</h2>
+    <div class="package-card" style="margin-bottom: 2rem;">
+      <div class="price">$4,499 <span style="font-size:1rem; font-weight:400;">/year</span></div>
+      <div class="annual">Ad budget separate ($500+/mo recommended)</div>
+      <ul>
+        <li>Facebook, Instagram & TikTok ad management</li>
+        <li>Campaign setup, audience targeting, retargeting</li>
+        <li>Creative testing & optimization</li>
+        <li>Google Analytics 4 & heatmap analysis</li>
+        <li>Weekly performance reporting</li>
+        <li>Strategy adjustments based on results</li>
+        <li>Creative direction (production quoted separately)</li>
+      </ul>
+    </div>
+
+    <!-- Package 2 -->
+    <h2>Package 2 · Social Ads + Social Media Growth — 12 months</h2>
+    <div class="package-card premium" style="margin-bottom: 2rem;">
+      <div class="price">$6,499 <span style="font-size:1rem; font-weight:400;">/year</span></div>
+      <div class="annual">Ad budget separate ($500+/mo recommended)</div>
+      <ul>
+        <li><strong>Everything in Package 1</strong></li>
+        <li>Organic Facebook, Instagram & TikTok management</li>
+        <li>Content strategy: product, brand, educational, custom jewelry</li>
+        <li>Monthly content calendar (posts, Reels, Stories)</li>
+        <li>Organic + paid synergy (boost top organic content)</li>
+        <li>Social growth reporting: followers, reach, engagement</li>
+        <li>Monthly content performance review</li>
+      </ul>
+    </div>
+
+    <!-- Side by side comparison -->
+    <h2>Side‑by‑side comparison</h2>
+    <table class="comparison-table">
+      <tr><th>Feature</th><th>Social Ads Growth</th><th>Social Ads + SMM</th></tr>
+      <tr><td>Facebook / Instagram / TikTok ads</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Paid ad strategy, audience research, creative testing</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Retargeting & optimization</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Weekly ad performance + strategy adjustments</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Google Analytics, heatmaps, website behaviour</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Organic Facebook / Instagram / TikTok management</td><td>—</td><td>✓</td></tr>
+      <tr><td>Content strategy & calendar</td><td>—</td><td>✓</td></tr>
+      <tr><td>Organic performance reporting</td><td>—</td><td>✓</td></tr>
+      <tr class="highlight"><td>Annual management</td><td>$4499</td><td>$6499</td></tr>
+      <tr><td>Advertising budget</td><td>Separate</td><td>Separate</td></tr>
+      <tr><td>Recommended starting ad budget</td><td>$500+/mo</td><td>$500+/mo</td></tr>
+    </table>
+
+    <!-- What we manage -->
+    <h2>What we are actually managing</h2>
+    <div class="two-col-list">
+      <ul>
+        <li><strong>Advertising strategy</strong> – what, who, where, creative, structure, budget</li>
+        <li><strong>Campaign performance</strong> – ads, audiences, platforms, traffic, conversions</li>
+        <li><strong>Optimization</strong> – pause weak ads, shift budget, change creative</li>
+      </ul>
+      <ul>
+        <li><strong>Reporting</strong> – weekly performance updates</li>
+        <li><strong>Data analysis</strong> – GA4, heatmaps, user behaviour</li>
+        <li><strong>Continuous strategy development</strong> – evolves month to month</li>
+      </ul>
+    </div>
+
+    <!-- Budget vs fee -->
+    <div class="card" style="background:#f6f2ec; margin: 2rem 0;">
+      <h4 style="margin-top:0;">💰 Advertising budget vs. management fee</h4>
+      <p><strong>Management fee</strong> (paid to our team): strategy, campaign management, optimization, analytics, reporting, testing, SMM where applicable.</p>
+      <p><strong>Advertising budget</strong> (paid directly to Meta, Instagram, TikTok): actual ad placement. Recommended starting: <strong>$500/month minimum</strong> — can increase as data justifies.</p>
+    </div>
+
+    <!-- Important 12 month approach -->
+    <h3>Important 12‑month approach</h3>
+    <p>We protect you from expecting $500 ad spend = immediate sales. It’s a data‑driven build:</p>
+    <ul style="margin-left: 1.5rem; color:#3a3a3a;">
+      <li><strong>Phase 1 (mo 1–3):</strong> Discover — traffic, testing, data collection</li>
+      <li><strong>Phase 2 (mo 4–6):</strong> Optimize — identify stronger products, audiences, creatives</li>
+      <li><strong>Phase 3 (mo 7–9):</strong> Expand — increase testing and scale successful strategies</li>
+      <li><strong>Phase 4 (mo 10–12):</strong> Scale — focus budget on proven opportunities while testing new ones</li>
+    </ul>
+
+    <!-- footer / call to action -->
+    <div class="separator"></div>
+    <p style="text-align: center; font-size: 1.1rem; font-weight: 400; color: #5c5040;">Ready to harmonize your jewelry brand’s digital growth?</p>
+    <p style="text-align: center; font-size: 0.95rem; color: #7b6e60;">We’ll tailor the 12‑month roadmap to your collection & goals.</p>
+    <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #b9aa98;">Prepared exclusively for Harmonized Designs Jewelry</p>
+  </div>
+</body>
+</html>
