@@ -51,6 +51,85 @@
             font-weight: 400;
         }
 
+        /* ---- REVISED website mention (more prominent) ---- */
+        .website-mention {
+            background: linear-gradient(135deg, #0a2c4a 0%, #1a4a73 100%);
+            border-radius: 80px;
+            padding: 1rem 2rem 1rem 2.2rem;
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem 2rem;
+            margin: 1.2rem auto 1.5rem;
+            box-shadow: 0 12px 25px -8px rgba(10, 44, 74, 0.4);
+            border: 1px solid #4a7ca5;
+            color: white;
+            font-weight: 600;
+            transition: box-shadow 0.2s;
+            max-width: 95%;
+        }
+
+        .website-mention:hover {
+            box-shadow: 0 18px 30px -10px rgba(10, 44, 74, 0.6);
+        }
+
+        .website-mention .site-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.15rem;
+            letter-spacing: -0.01em;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.45rem 1.4rem 0.45rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        .website-mention .site-item i {
+            color: #7ec8ff;
+            font-size: 1.1rem;
+        }
+
+        .website-mention .site-divider {
+            color: #7fa9c7;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        /* Two-website inclusion banner */
+        .two-site-banner {
+            background: #e3f3e8;
+            border: 1px solid #b8ddc5;
+            border-radius: 60px;
+            padding: 0.85rem 1.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 1.2rem auto 0.5rem;
+            max-width: 95%;
+            box-shadow: 0 4px 10px rgba(30, 126, 52, 0.08);
+        }
+
+        .two-site-banner i {
+            color: #1e7e34;
+            font-size: 1.3rem;
+        }
+
+        .two-site-banner span {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f5124;
+            text-align: left;
+        }
+
+        .two-site-banner strong {
+            font-weight: 700;
+            color: #0a3d1b;
+        }
+
+        /* optional small badge */
         .header .note {
             display: inline-block;
             background: #e8f0fe;
@@ -67,31 +146,12 @@
             color: #2d6a9f;
         }
 
-        /* Two-site badge */
-        .two-sites {
-            background: #d9e9fa;
-            border-radius: 30px;
-            padding: 0.4rem 1.1rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #0a3a5e;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid #aac9e9;
-        }
-
-        .two-sites i {
-            font-size: 1rem;
-        }
-
         /* Pricing grid */
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.8rem;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
         }
 
         .card {
@@ -249,6 +309,45 @@
         .cta-btn i {
             margin-left: 8px;
             font-size: 0.85rem;
+        }
+
+        /* Pricing note under grid */
+        .pricing-note {
+            background: #f0f7ff;
+            border-radius: 24px;
+            padding: 1.3rem 1.8rem;
+            margin: 1.5rem 0 3rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            border: 1px solid #cfe2f5;
+            box-shadow: 0 4px 12px rgba(30, 76, 143, 0.05);
+        }
+
+        .pricing-note i {
+            color: #1e4c8f;
+            font-size: 1.6rem;
+            margin-top: 2px;
+        }
+
+        .pricing-note p {
+            font-size: 1rem;
+            color: #174a73;
+            line-height: 1.6;
+        }
+
+        .pricing-note strong {
+            font-weight: 700;
+            color: #0b2b4b;
+        }
+
+        .pricing-note .highlight {
+            background: #d4e9ff;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #0a2c4a;
+            white-space: nowrap;
         }
 
         /* Long-term value section (savings) */
@@ -463,6 +562,40 @@
             .header h1 {
                 font-size: 2rem;
             }
+
+            .website-mention {
+                flex-direction: column;
+                border-radius: 60px;
+                padding: 1.2rem 1.5rem;
+                gap: 0.6rem;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .website-mention .site-divider {
+                display: none;
+            }
+
+            .website-mention .site-item {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .pricing-note {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 1.2rem 1.2rem;
+            }
+
+            .two-site-banner {
+                flex-direction: column;
+                text-align: center;
+                border-radius: 32px;
+                padding: 1rem 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -485,17 +618,36 @@
             .price-main {
                 font-size: 2.4rem;
             }
+
+            .website-mention .site-item {
+                font-size: 0.9rem;
+                padding: 0.4rem 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
 
-        <!-- Header -->
+        <!-- Header with prominent website mention -->
         <div class="header">
-            <div class="two-sites">
-                <i class="fas fa-globe"></i> Proposal for 2 websites · all packages
+            <!-- new prominent websites block -->
+            <div class="website-mention">
+                <span class="site-item">
+                    <i class="fas fa-globe"></i> www.amazingsmileschool.com
+                </span>
+                <span class="site-divider">+</span>
+                <span class="site-item">
+                    <i class="fas fa-globe"></i> www.amazingsmilefl.com
+                </span>
             </div>
+
+            <!-- two-site inclusion banner -->
+            <div class="two-site-banner">
+                <i class="fas fa-hand-holding-heart"></i>
+                <span>This proposal covers <strong>both websites</strong> — one package, two sites.</span>
+            </div>
+
             <h1>Hosting + Website Maintenance</h1>
             <p class="subhead">Care packages designed to keep your sites fast, secure, and always online — with proactive support.</p>
             <div class="note">
@@ -563,51 +715,61 @@
             </div>
         </div>
 
+        <!-- Pricing note: two websites included -->
+        <div class="pricing-note">
+            <i class="fas fa-gift"></i>
+            <p>
+                <strong>Two websites, one price.</strong> These package prices are normally for a <span class="highlight">single website</span>. 
+                Because you have <strong>both amazingsmileschool.com and amazingsmilefl.com</strong> with us, 
+                we are including your <strong>second website in the same package at no additional charge</strong> — 
+                you get complete coverage for both sites under one plan.
+            </p>
+        </div>
+
         <!-- Long-Term Value / Contract Savings section -->
         <div class="savings-section">
             <h2><i class="fas fa-piggy-bank"></i> Long-term value & contract savings</h2>
             <p class="savings-sub">Commit for 3 or 5 years and save compared to annual renewals. Pricing shown for two websites.</p>
 
             <div class="savings-grid">
-    <!-- Standard Care savings -->
-    <div class="savings-item">
-        <h4>Standard Care <span>1‑yr $799</span></h4>
-        <div class="savings-row">
-            <span class="term">3 years</span>
-            <span class="price">$2,159 <span class="save">save $238</span></span>
-        </div>
-        <div class="savings-row">
-            <span class="term">5 years</span>
-            <span class="price">$3,399 <span class="save">save $596</span></span>
-        </div>
-    </div>
+                <!-- Standard Care savings -->
+                <div class="savings-item">
+                    <h4>Standard Care <span>1‑yr $799</span></h4>
+                    <div class="savings-row">
+                        <span class="term">3 years</span>
+                        <span class="price">$2,159 <span class="save">save $238</span></span>
+                    </div>
+                    <div class="savings-row">
+                        <span class="term">5 years</span>
+                        <span class="price">$3,399 <span class="save">save $596</span></span>
+                    </div>
+                </div>
 
-    <!-- Professional Care savings (most popular) -->
-    <div class="savings-item" style="border: 1.5px solid #2d6a9f; background: #f2f9ff;">
-        <h4>Professional Care <span>1‑yr $999</span></h4>
-        <div class="savings-row">
-            <span class="term">3 years</span>
-            <span class="price">$2,699 <span class="save">save $298</span></span>
-        </div>
-        <div class="savings-row">
-            <span class="term">5 years</span>
-            <span class="price">$4,249 <span class="save">save $746</span></span>
-        </div>
-    </div>
+                <!-- Professional Care savings (most popular) -->
+                <div class="savings-item" style="border: 1.5px solid #2d6a9f; background: #f2f9ff;">
+                    <h4>Professional Care <span>1‑yr $999</span></h4>
+                    <div class="savings-row">
+                        <span class="term">3 years</span>
+                        <span class="price">$2,699 <span class="save">save $298</span></span>
+                    </div>
+                    <div class="savings-row">
+                        <span class="term">5 years</span>
+                        <span class="price">$4,249 <span class="save">save $746</span></span>
+                    </div>
+                </div>
 
-    <!-- Premium Care savings -->
-    <div class="savings-item">
-        <h4>Premium Care <span>1‑yr $1,199</span></h4>
-        <div class="savings-row">
-            <span class="term">3 years</span>
-            <span class="price">$3,239 <span class="save">save $358</span></span>
-        </div>
-        <div class="savings-row">
-            <span class="term">5 years</span>
-            <span class="price">$5,099 <span class="save">save $896</span></span>
-        </div>
-    </div>
-</div>
+                <!-- Premium Care savings -->
+                <div class="savings-item">
+                    <h4>Premium Care <span>1‑yr $1,199</span></h4>
+                    <div class="savings-row">
+                        <span class="term">3 years</span>
+                        <span class="price">$3,239 <span class="save">save $358</span></span>
+                    </div>
+                    <div class="savings-row">
+                        <span class="term">5 years</span>
+                        <span class="price">$5,099 <span class="save">save $896</span></span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -631,7 +793,7 @@
         <!-- fine print -->
         <div class="fine-print">
             <i class="fas fa-check-circle"></i> All packages include basic SEO maintenance, monthly reporting, and server updates. 3‑year and 5‑year pricing reflects contract savings versus annual renewals. <br>
-            <i class="fas fa-globe"></i> Proposal valid for two websites · pricing in USD.
+            <i class="fas fa-globe"></i> Proposal covers <strong>www.amazingsmileschool.com</strong> and <strong>www.amazingsmilefl.com</strong> · pricing in USD.
         </div>
 
     </div>
