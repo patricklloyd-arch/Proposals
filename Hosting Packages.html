@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hosting + Website Maintenance · Care Packages</title>
+    <!-- Google Font & Font Awesome for icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f6f9fc;
+            color: #1e293b;
+            line-height: 1.5;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #0b2b4b;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subhead {
+            font-size: 1.2rem;
+            color: #475569;
+            max-width: 700px;
+            margin: 0 auto 0.75rem;
+            font-weight: 400;
+        }
+
+        .header .note {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1e4c8f;
+            padding: 0.5rem 1.25rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .header .note i {
+            margin-right: 6px;
+            color: #2d6a9f;
+        }
+
+        /* Two-site badge */
+        .two-sites {
+            background: #d9e9fa;
+            border-radius: 30px;
+            padding: 0.4rem 1.1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #0a3a5e;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #aac9e9;
+        }
+
+        .two-sites i {
+            font-size: 1rem;
+        }
+
+        /* Pricing grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 15px 30px -10px rgba(0, 20, 40, 0.1);
+            padding: 2rem 1.8rem 1.8rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e9eef3;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 40px -12px rgba(0, 30, 60, 0.2);
+            border-color: #cdddec;
+        }
+
+        .card.popular {
+            border: 2px solid #2d6a9f;
+            box-shadow: 0 20px 35px -10px rgba(25, 90, 150, 0.2);
+            background: linear-gradient(white, #fafdff);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e4c8f;
+            color: white;
+            padding: 0.45rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            box-shadow: 0 6px 12px rgba(30, 76, 143, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+            color: #0b2b4b;
+        }
+
+        .tenure-badge {
+            display: inline-block;
+            background: #eef2f6;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2d4b6e;
+            margin-bottom: 1.5rem;
+            border: 1px solid #d0dfeb;
+        }
+
+        .price-main {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #0a2c4a;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.2rem;
+        }
+
+        .price-main span {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #5c6f84;
+        }
+
+        .price-equiv {
+            font-size: 1rem;
+            color: #5e7188;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px dashed #d2dfec;
+            padding-bottom: 1rem;
+        }
+
+        .price-equiv i {
+            margin-right: 4px;
+            color: #2d6a9f;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0 1.5rem;
+            flex-grow: 1;
+        }
+
+        .feature-list li {
+            font-size: 0.95rem;
+            padding: 0.6rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border-bottom: 1px solid #f0f4f9;
+            color: #1e3a5f;
+        }
+
+        .feature-list li i.fa-check {
+            color: #1e7e34;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+            width: 16px;
+            flex-shrink: 0;
+        }
+
+        .feature-list li i.fa-star {
+            color: #e6a017;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+            width: 16px;
+            flex-shrink: 0;
+        }
+
+        .feature-list li .enhanced {
+            background: #e2f0e6;
+            color: #136b2b;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            margin-left: 6px;
+            text-transform: uppercase;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: #0a2c4a;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.9rem 1.2rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: background 0.2s, transform 0.1s;
+            border: none;
+            cursor: default;
+            margin-top: 0.5rem;
+        }
+
+        .card.popular .cta-btn {
+            background: #1e4c8f;
+        }
+
+        .cta-btn i {
+            margin-left: 8px;
+            font-size: 0.85rem;
+        }
+
+        /* Long-term value section (savings) */
+        .savings-section {
+            background: white;
+            border-radius: 28px;
+            padding: 2rem 2.2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e0ebf5;
+            margin-bottom: 2.5rem;
+        }
+
+        .savings-section h2 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #0b2b4b;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .savings-section h2 i {
+            color: #1e7e34;
+            font-size: 1.8rem;
+        }
+
+        .savings-sub {
+            color: #4b637b;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .savings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .savings-item {
+            background: #f5faff;
+            border-radius: 20px;
+            padding: 1.6rem 1.5rem;
+            border: 1px solid #d7e4f0;
+            transition: background 0.15s;
+        }
+
+        .savings-item:hover {
+            background: #eef6fe;
+        }
+
+        .savings-item h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0b2b4b;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .savings-item h4 span {
+            font-size: 0.75rem;
+            background: #d4e3f5;
+            padding: 0.25rem 0.9rem;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #174a73;
+        }
+
+        .savings-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #e2ecf7;
+            font-size: 0.95rem;
+        }
+
+        .savings-row:last-child {
+            border-bottom: none;
+        }
+
+        .savings-row .term {
+            color: #416483;
+            font-weight: 500;
+        }
+
+        .savings-row .price {
+            font-weight: 700;
+            color: #0a2c4a;
+        }
+
+        .savings-row .save {
+            color: #1b7e3e;
+            font-weight: 600;
+            font-size: 0.85rem;
+            background: #e3f3e8;
+            padding: 0.15rem 0.6rem;
+            border-radius: 30px;
+            margin-left: 12px;
+            white-space: nowrap;
+        }
+
+        /* Progression bar / positioning */
+        .positioning {
+            background: #0b2b4b;
+            border-radius: 30px;
+            padding: 2.2rem 2.5rem;
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.8rem;
+            margin-top: 1rem;
+            box-shadow: 0 15px 25px -8px rgba(7, 30, 55, 0.3);
+        }
+
+        .positioning-text {
+            max-width: 600px;
+        }
+
+        .positioning-text h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.6rem;
+        }
+
+        .positioning-text p {
+            color: #b6d0e8;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .progression-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            background: #123456;
+            padding: 1rem 1.8rem;
+            border-radius: 80px;
+            border: 1px solid #2b577a;
+        }
+
+        .progression-badges span {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .progression-badges span i {
+            color: #7eb9e8;
+        }
+
+        .progression-badges .arrow {
+            color: #6f9bc0;
+            font-size: 1rem;
+        }
+
+        /* footer / fine print */
+        .fine-print {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #687e97;
+            margin-top: 2.5rem;
+            border-top: 1px solid #d7e2ee;
+            padding-top: 1.5rem;
+        }
+
+        .fine-print i {
+            margin-right: 4px;
+            color: #3570a8;
+        }
+
+        /* responsive */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                gap: 1.2rem;
+            }
+            .savings-grid {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .savings-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .positioning {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .progression-badges {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1.5rem 1rem 2.5rem;
+            }
+
+            .card {
+                padding: 1.8rem 1.2rem 1.4rem;
+            }
+
+            .savings-section {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .positioning {
+                padding: 1.6rem 1.4rem;
+            }
+
+            .price-main {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="two-sites">
+                <i class="fas fa-globe"></i> Proposal for 2 websites · all packages
+            </div>
+            <h1>Hosting + Website Maintenance</h1>
+            <p class="subhead">Care packages designed to keep your sites fast, secure, and always online — with proactive support.</p>
+            <div class="note">
+                <i class="fas fa-shield-alt"></i> All plans include security, backups & core updates
+            </div>
+        </div>
+
+        <!-- 3 pricing cards -->
+        <div class="pricing-grid">
+            <!-- Standard Care -->
+            <div class="card">
+                <h3>Standard Care</h3>
+                <div class="tenure-badge">1 year agreement</div>
+                <div class="price-main">$799<span>/year</span></div>
+              
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Standard hosting</li>
+                    <li><i class="fas fa-check"></i> Daily monitoring</li>
+                    <li><i class="fas fa-check"></i> Weekly backups</li>
+                    <li><i class="fas fa-check"></i> Security updates</li>
+                    <li><i class="fas fa-check"></i> Scheduled maintenance</li>
+                    <li><i class="fas fa-check"></i> Basic technical support</li>
+                    <li><i class="fas fa-check"></i> Basic SEO maintenance</li>
+                </ul>
+                <div class="cta-btn">Get started <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <!-- Professional Care (Most Popular) -->
+            <div class="card popular">
+                <div class="popular-badge"><i class="fas fa-star" style="margin-right: 6px;"></i> Most Popular</div>
+                <h3>Professional Care</h3>
+                <div class="tenure-badge">1 year agreement</div>
+                <div class="price-main">$999<span>/year</span></div>
+               
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Managed hosting</li>
+                    <li><i class="fas fa-check"></i> Daily backups</li>
+                    <li><i class="fas fa-check"></i> Proactive monitoring</li>
+                    <li><i class="fas fa-check"></i> Security monitoring</li>
+                    <li><i class="fas fa-check"></i> Performance optimization</li>
+                    <li><i class="fas fa-check"></i> Priority support</li>
+                    <li><i class="fas fa-check"></i> Ongoing maintenance</li>
+                    <li><i class="fas fa-check"></i> Basic SEO maintenance</li>
+                </ul>
+                <div class="cta-btn">Choose Professional <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <!-- Premium Care -->
+            <div class="card">
+                <h3>Premium Care</h3>
+                <div class="tenure-badge">1 year agreement</div>
+                <div class="price-main">$1,199<span>/year</span></div>
+                
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Premium managed hosting</li>
+                    <li><i class="fas fa-check"></i> 24/7 monitoring</li>
+                    <li><i class="fas fa-check"></i> Enhanced security <span class="enhanced">Enhanced</span></li>
+                    <li><i class="fas fa-check"></i> Daily backups + additional protection</li>
+                    <li><i class="fas fa-check"></i> Advanced performance optimization</li>
+                    <li><i class="fas fa-check"></i> Priority maintenance</li>
+                    <li><i class="fas fa-check"></i> Expedited technical support</li>
+                    <li><i class="fas fa-check"></i> Detailed monthly reports</li>
+                </ul>
+                <div class="cta-btn">Go Premium <i class="fas fa-arrow-right"></i></div>
+            </div>
+        </div>
+
+        <!-- Long-Term Value / Contract Savings section -->
+        <div class="savings-section">
+            <h2><i class="fas fa-piggy-bank"></i> Long-term value & contract savings</h2>
+            <p class="savings-sub">Commit for 3 or 5 years and save compared to annual renewals. Pricing shown for two websites.</p>
+
+            <div class="savings-grid">
+    <!-- Standard Care savings -->
+    <div class="savings-item">
+        <h4>Standard Care <span>1‑yr $799</span></h4>
+        <div class="savings-row">
+            <span class="term">3 years</span>
+            <span class="price">$2,159 <span class="save">save $238</span></span>
+        </div>
+        <div class="savings-row">
+            <span class="term">5 years</span>
+            <span class="price">$3,399 <span class="save">save $596</span></span>
+        </div>
+    </div>
+
+    <!-- Professional Care savings (most popular) -->
+    <div class="savings-item" style="border: 1.5px solid #2d6a9f; background: #f2f9ff;">
+        <h4>Professional Care <span>1‑yr $999</span></h4>
+        <div class="savings-row">
+            <span class="term">3 years</span>
+            <span class="price">$2,699 <span class="save">save $298</span></span>
+        </div>
+        <div class="savings-row">
+            <span class="term">5 years</span>
+            <span class="price">$4,249 <span class="save">save $746</span></span>
+        </div>
+    </div>
+
+    <!-- Premium Care savings -->
+    <div class="savings-item">
+        <h4>Premium Care <span>1‑yr $1,199</span></h4>
+        <div class="savings-row">
+            <span class="term">3 years</span>
+            <span class="price">$3,239 <span class="save">save $358</span></span>
+        </div>
+        <div class="savings-row">
+            <span class="term">5 years</span>
+            <span class="price">$5,099 <span class="save">save $896</span></span>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+
+        <!-- Positioning / progression bar -->
+        <div class="positioning">
+            <div class="positioning-text">
+                <h3><i class="fas fa-arrow-trend-up" style="margin-right: 10px;"></i> A natural upgrade path</h3>
+                <p>Basic Hosting → Standard Care → Professional Care → Premium Care. Every step adds proactive monitoring, stronger security, faster support, and deeper optimization — without ever positioning lower tiers as “bad.” It's simply more coverage, more peace of mind.</p>
+            </div>
+            <div class="progression-badges">
+                <span><i class="fas fa-hdd"></i> Basic Hosting</span>
+                <i class="fas fa-arrow-right arrow"></i>
+                <span><i class="fas fa-shield"></i> Standard Care</span>
+                <i class="fas fa-arrow-right arrow"></i>
+                <span><i class="fas fa-chart-line"></i> Professional Care</span>
+                <i class="fas fa-arrow-right arrow"></i>
+                <span><i class="fas fa-crown"></i> Premium Care</span>
+            </div>
+        </div>
+
+        <!-- fine print -->
+        <div class="fine-print">
+            <i class="fas fa-check-circle"></i> All packages include basic SEO maintenance, monthly reporting, and server updates. 3‑year and 5‑year pricing reflects contract savings versus annual renewals. <br>
+            <i class="fas fa-globe"></i> Proposal valid for two websites · pricing in USD.
+        </div>
+
+    </div>
+</body>
+</html>
