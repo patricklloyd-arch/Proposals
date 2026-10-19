@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Math Meteor Rescue</title>
+<style>
+  :root{
+    --bg1:#07142f; --bg2:#162b59; --panel:rgba(10,22,52,.86);
+    --ink:#f7fbff; --muted:#b7c7e8; --cyan:#4de2ff; --yellow:#ffd166;
+    --pink:#ff6bb5; --green:#62f59a; --danger:#ff6b6b; --purple:#9b7bff;
+    --shadow:0 18px 60px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;font-family:ui-rounded,"SF Pro Rounded","Segoe UI",Arial,sans-serif;color:var(--ink);background:#061127;overflow:hidden}
+  body{touch-action:manipulation;user-select:none}
+  button{font:inherit}
+  #app{position:relative;width:100%;height:100%;min-height:540px;background:
+      radial-gradient(circle at 15% 20%,rgba(77,226,255,.16),transparent 26%),
+      radial-gradient(circle at 88% 13%,rgba(155,123,255,.18),transparent 28%),
+      linear-gradient(180deg,var(--bg2),var(--bg1));overflow:hidden}
+  #stars,#gameCanvas{position:absolute;inset:0;width:100%;height:100%}
+  #stars{opacity:.95}
+  .topbar{position:absolute;left:50%;top:max(14px,env(safe-area-inset-top));transform:translateX(-50%);
+    width:min(960px,calc(100% - 24px));display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;z-index:10}
+  .pill{background:rgba(7,20,47,.73);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);
+    box-shadow:0 8px 30px rgba(0,0,0,.18);border-radius:999px;padding:8px 13px;min-height:44px;display:flex;align-items:center;gap:9px}
+  .stats{justify-self:start}.controls{justify-self:end}
+  .brand{font-weight:1000;letter-spacing:.4px;text-align:center;text-shadow:0 3px 14px rgba(0,0,0,.35)}
+  .brand b{color:var(--cyan)}
+  .stat{display:flex;align-items:center;gap:6px;font-weight:900;font-size:14px;white-space:nowrap}
+  .iconbtn{width:36px;height:36px;border:0;border-radius:50%;color:#fff;background:rgba(255,255,255,.10);cursor:pointer;display:grid;place-items:center;
+    transition:.15s transform,.15s background}
+  .iconbtn:hover{transform:translateY(-1px);background:rgba(255,255,255,.18)}
+  .iconbtn:focus-visible,.answer:focus-visible,.primary:focus-visible,.smallbtn:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+  .mission{position:absolute;z-index:8;left:50%;top:88px;transform:translateX(-50%);width:min(740px,calc(100% - 28px));text-align:center}
+  .mission-card{display:inline-flex;align-items:center;gap:14px;padding:11px 18px;border-radius:20px;background:rgba(7,20,47,.58);
+    border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);box-shadow:0 10px 36px rgba(0,0,0,.15)}
+  .mission-label{font-size:12px;text-transform:uppercase;letter-spacing:1.6px;font-weight:1000;color:var(--muted)}
+  #question{font-size:clamp(24px,4.6vw,42px);font-weight:1000;line-height:1}
+  #question .eq{color:var(--yellow)}
+  .answerbar{position:absolute;z-index:11;left:50%;bottom:max(18px,calc(env(safe-area-inset-bottom) + 12px));transform:translateX(-50%);
+    width:min(820px,calc(100% - 24px));display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .answer{position:relative;border:0;border-radius:22px;min-height:76px;color:#fff;font-size:clamp(24px,5vw,36px);font-weight:1000;cursor:pointer;
+    background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08));border:2px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 26px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.18);transition:.12s transform,.12s filter,.12s border-color}
+  .answer:hover{transform:translateY(-3px);filter:brightness(1.13);border-color:rgba(255,255,255,.34)}
+  .answer:active{transform:translateY(1px) scale(.98)}
+  .answer.correct{animation:good .42s ease;background:linear-gradient(180deg,#66f6a0,#1bbb67)}
+  .answer.wrong{animation:bad .35s ease;background:linear-gradient(180deg,#ff8a8a,#d53e52)}
+  @keyframes good{50%{transform:scale(1.07)}} @keyframes bad{25%,75%{transform:translateX(-6px)}50%{transform:translateX(6px)}}
+  .overlay{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:20px;background:rgba(4,10,28,.48);backdrop-filter:blur(8px)}
+  .overlay.hidden{display:none}
+  .card{width:min(700px,100%);max-height:min(720px,calc(100vh - 34px));overflow:auto;border-radius:32px;padding:clamp(22px,5vw,42px);
+    background:linear-gradient(180deg,rgba(20,42,88,.97),rgba(8,22,52,.98));border:1px solid rgba(255,255,255,.15);box-shadow:var(--shadow);text-align:center}
+  .logo-orbit{width:110px;height:110px;margin:0 auto 10px;position:relative;display:grid;place-items:center}
+  .planet{width:64px;height:64px;border-radius:50%;background:
+      radial-gradient(circle at 30% 25%,#fff7a8 0 7%,transparent 8%),
+      radial-gradient(circle at 70% 60%,rgba(255,255,255,.25) 0 10%,transparent 11%),
+      linear-gradient(145deg,#ffcc62,#ff7d7d);box-shadow:inset -12px -12px 20px rgba(119,41,72,.22),0 0 32px rgba(255,209,102,.25)}
+  .orbit{position:absolute;width:104px;height:38px;border:4px solid var(--cyan);border-radius:50%;transform:rotate(-15deg);box-shadow:0 0 16px rgba(77,226,255,.5)}
+  h1{margin:6px 0 8px;font-size:clamp(34px,7vw,58px);line-height:.97}
+  .subtitle{margin:0 auto 22px;max-width:580px;color:var(--muted);font-size:clamp(15px,2.6vw,18px);line-height:1.5}
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 22px}
+  .how div{padding:13px 10px;border-radius:18px;background:rgba(255,255,255,.06);font-weight:800;font-size:14px}
+  .how span{display:block;font-size:28px;margin-bottom:6px}
+  .primary{border:0;border-radius:18px;padding:15px 26px;background:linear-gradient(180deg,#54e8ff,#22b7f1);color:#05213b;font-weight:1000;font-size:18px;cursor:pointer;
+    box-shadow:0 10px 25px rgba(34,183,241,.3);transition:.15s transform,.15s filter}
+  .primary:hover{transform:translateY(-2px);filter:brightness(1.08)}
+  .smallbtn{border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:10px 14px;color:#fff;background:rgba(255,255,255,.08);font-weight:900;cursor:pointer}
+  .difficulty{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:4px 0 22px}
+  .difficulty button.active{background:var(--yellow);color:#3a2c06;border-color:transparent}
+  .levelup{position:absolute;z-index:15;left:50%;top:47%;transform:translate(-50%,-50%) scale(.8);opacity:0;pointer-events:none;text-align:center}
+  .levelup.show{animation:levelpop 1.25s ease}
+  .levelup strong{display:block;font-size:clamp(48px,10vw,90px);color:var(--yellow);text-shadow:0 5px 25px rgba(0,0,0,.35)}
+  .levelup span{font-weight:1000;font-size:18px;letter-spacing:2px}
+  @keyframes levelpop{0%{opacity:0;transform:translate(-50%,-50%) scale(.7)}20%,70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(1.1)}}
+  .toast{position:absolute;z-index:14;left:50%;top:155px;transform:translateX(-50%) translateY(-8px);opacity:0;padding:9px 14px;border-radius:999px;
+    font-size:14px;font-weight:1000;background:rgba(7,20,47,.83);border:1px solid rgba(255,255,255,.12);transition:.22s}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .progress{height:8px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-top:9px}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:inherit;transition:.3s width}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}
+  .result-grid div{padding:16px;border-radius:20px;background:rgba(255,255,255,.06)}
+  .result-grid b{display:block;font-size:28px;color:var(--yellow)}
+  .result-grid span{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:1px}
+  .footer-note{margin-top:18px;color:#91a8d0;font-size:12px}
+  .ship-hint{position:absolute;z-index:6;left:50%;bottom:112px;transform:translateX(-50%);font-size:12px;color:rgba(255,255,255,.66);font-weight:800;pointer-events:none}
+  @media(max-width:680px){
+    .topbar{grid-template-columns:1fr 1fr}.brand{display:none}.controls{justify-self:end}.pill{padding:7px 10px}
+    .stats{gap:8px}.stat{font-size:12px}.mission{top:77px}.mission-card{padding:10px 14px}
+    .answerbar{gap:7px}.answer{min-height:65px;border-radius:17px}.how{grid-template-columns:1fr}
+    .ship-hint{bottom:98px}
+  }
+  @media(max-height:650px){
+    .mission{top:68px}.answerbar{bottom:10px}.answer{min-height:58px}.ship-hint{display:none}
+    .card{padding:20px}.logo-orbit{display:none}.how{margin:10px 0}.subtitle{margin-bottom:12px}
+  }
+</style>
+</head>
+<body>
+<div id="app" aria-label="Math Meteor Rescue educational game">
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <canvas id="gameCanvas" aria-hidden="true"></canvas>
+
+  <div class="topbar">
+    <div class="pill stats">
+      <div class="stat" title="Score">⭐ <span id="score">0</span></div>
+      <div class="stat" title="Lives">❤️ <span id="lives">3</span></div>
+      <div class="stat" title="Level">🚀 <span id="level">1</span></div>
+    </div>
+    <div class="brand">MATH <b>METEOR</b> RESCUE</div>
+    <div class="pill controls">
+      <button id="soundBtn" class="iconbtn" aria-label="Toggle sound" title="Sound">🔊</button>
+      <button id="pauseBtn" class="iconbtn" aria-label="Pause game" title="Pause">⏸</button>
+    </div>
+  </div>
+
+  <div class="mission">
+    <div class="mission-card">
+      <div>
+        <div class="mission-label">Solve to power the shield</div>
+        <div id="question"><span>Ready?</span></div>
+        <div class="progress" aria-label="Level progress"><i id="progressFill"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Great job!</div>
+  <div id="levelUp" class="levelup"><span>NEW LEVEL</span><strong id="levelBig">2</strong></div>
+  <div class="ship-hint">Tap the correct answer • Keyboard: 1–4</div>
+
+  <div id="answerBar" class="answerbar" aria-label="Answer choices">
+    <button class="answer" data-i="0">?</button>
+    <button class="answer" data-i="1">?</button>
+    <button class="answer" data-i="2">?</button>
+    <button class="answer" data-i="3">?</button>
+  </div>
+
+  <div id="startOverlay" class="overlay">
+    <div class="card">
+      <div class="logo-orbit"><div class="orbit"></div><div class="planet"></div></div>
+      <h1>Math Meteor<br>Rescue</h1>
+      <p class="subtitle">Save Planet Nova! Solve quick math missions to charge your starship shield before the meteors get too close.</p>
+      <div class="how">
+        <div><span>🧠</span>Solve the mission</div>
+        <div><span>🛡️</span>Pick the answer</div>
+        <div><span>🚀</span>Level up & save Nova</div>
+      </div>
+      <div class="mission-label">Choose difficulty</div>
+      <div class="difficulty" id="difficulty">
+        <button class="smallbtn active" data-mode="easy">Explorer</button>
+        <button class="smallbtn" data-mode="medium">Pilot</button>
+        <button class="smallbtn" data-mode="hard">Captain</button>
+      </div>
+      <button id="startBtn" class="primary">Start Mission ▶</button>
+      <div class="footer-note">No ads • No login • Runs entirely in your browser</div>
+    </div>
+  </div>
+
+  <div id="pauseOverlay" class="overlay hidden">
+    <div class="card">
+      <h1>Paused</h1>
+      <p class="subtitle">Your mission is safe. Continue when you’re ready.</p>
+      <button id="resumeBtn" class="primary">Resume Mission ▶</button>
+    </div>
+  </div>
+
+  <div id="gameOverOverlay" class="overlay hidden">
+    <div class="card">
+      <div style="font-size:52px">🏆</div>
+      <h1>Mission Complete!</h1>
+      <p id="endMessage" class="subtitle">Great flying, cadet!</p>
+      <div class="result-grid">
+        <div><b id="finalScore">0</b><span>Score</span></div>
+        <div><b id="finalLevel">1</b><span>Level</span></div>
+        <div><b id="bestScore">0</b><span>Best</span></div>
+      </div>
+      <button id="restartBtn" class="primary">Play Again ↻</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
+  const starsCanvas = $("#stars"), starCtx = starsCanvas.getContext("2d");
+  const gameCanvas = $("#gameCanvas"), ctx = gameCanvas.getContext("2d");
+
+  let W=0,H=0,dpr=1;
+  let stars=[], particles=[], meteors=[];
+  let running=false, paused=false, soundOn=true, gameStarted=false;
+  let score=0, lives=3, level=1, streak=0, correctInLevel=0, question=null;
+  let difficulty="easy", lastTime=0, spawnClock=0, shake=0, lockAnswers=false;
+  const answers = $$(".answer");
+  const state = {shipX:0, shipY:0, shipBob:0};
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    [starsCanvas, gameCanvas].forEach(c => {
+      c.width = Math.floor(W*dpr); c.height = Math.floor(H*dpr);
+      c.style.width = W+"px"; c.style.height = H+"px";
+    });
+    starCtx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    makeStars();
+    state.shipX=W/2; state.shipY=H-178;
+  }
+
+  function makeStars(){
+    const n = Math.max(70, Math.floor(W*H/9000));
+    stars = Array.from({length:n}, () => ({
+      x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.7+.35,
+      a:Math.random()*.7+.25, s:Math.random()*.9+.2
+    }));
+  }
+
+  function drawStars(t){
+    starCtx.clearRect(0,0,W,H);
+    for(const s of stars){
+      const a = s.a + Math.sin(t*.001*s.s+s.x)*.18;
+      starCtx.fillStyle=`rgba(255,255,255,${Math.max(.12,a)})`;
+      starCtx.beginPath(); starCtx.arc(s.x,s.y,s.r,0,Math.PI*2); starCtx.fill();
+    }
+  }
+
+  class AudioFX{
+    constructor(){this.ctx=null}
+    init(){
+      if(!this.ctx) this.ctx = new (window.AudioContext||window.webkitAudioContext)();
+      if(this.ctx.state==="suspended") this.ctx.resume();
+    }
+    tone(freq=440,dur=.1,type="sine",vol=.05,slide=0){
+      if(!soundOn) return;
+      try{
+        this.init();
+        const t=this.ctx.currentTime, o=this.ctx.createOscillator(), g=this.ctx.createGain();
+        o.type=type; o.frequency.setValueAtTime(freq,t);
+        if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(40,freq+slide),t+dur);
+        g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.015);
+        g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+        o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+dur+.02);
+      }catch(e){}
+    }
+    click(){this.tone(520,.06,"square",.025,70)}
+    good(){this.tone(660,.09,"triangle",.06,180); setTimeout(()=>this.tone(880,.14,"triangle",.05,240),70)}
+    bad(){this.tone(180,.18,"sawtooth",.045,-60)}
+    level(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>this.tone(f,.16,"triangle",.045,60),i*85))}
+    boom(){this.tone(90,.25,"sawtooth",.05,-40)}
+  }
+  const fx = new AudioFX();
+
+  function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+  function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a}
+
+  function generateQuestion(){
+    let a,b,op,ans;
+    const stage = level + (difficulty==="medium"?2:difficulty==="hard"?4:0);
+    const pool = difficulty==="easy" ? ["+","-"] : difficulty==="medium" ? ["+","-","×"] : ["+","-","×","÷"];
+    op = pool[rand(0,pool.length-1)];
+
+    if(op==="+"){
+      const max=clamp(10+stage*4,12,60); a=rand(1,max); b=rand(1,max); ans=a+b;
+    }else if(op==="-"){
+      const max=clamp(12+stage*5,15,80); a=rand(4,max); b=rand(1,a); ans=a-b;
+    }else if(op==="×"){
+      a=rand(2,clamp(4+Math.ceil(stage/2),5,12)); b=rand(2,clamp(5+stage,6,12)); ans=a*b;
+    }else{
+      b=rand(2,clamp(4+Math.ceil(stage/2),4,12)); ans=rand(2,clamp(5+stage,6,12)); a=b*ans;
+    }
+
+    const set = new Set([ans]);
+    const spread = op==="×"||op==="÷" ? Math.max(3,Math.ceil(ans*.16)) : Math.max(4,Math.ceil(ans*.18));
+    let guard=0;
+    while(set.size<4 && guard++<60){
+      let v = ans + rand(-spread,spread);
+      if(v>=0 && v!==ans) set.add(v);
+    }
+    for(let v=0;set.size<4;v++) if(v!==ans) set.add(v);
+    return {text:`${a} ${op} ${b}`, answer:ans, choices:shuffle([...set])};
+  }
+
+  function nextQuestion(){
+    lockAnswers=false;
+    answers.forEach(b=>b.classList.remove("correct","wrong"));
+    question=generateQuestion();
+    $("#question").innerHTML=`<span>${question.text}</span> <span class="eq">= ?</span>`;
+    question.choices.forEach((v,i)=>answers[i].textContent=v);
+    updateHUD();
+  }
+
+  function updateHUD(){
+    $("#score").textContent=score;
+    $("#lives").textContent=lives;
+    $("#level").textContent=level;
+    $("#progressFill").style.width=`${(correctInLevel/5)*100}%`;
+  }
+
+  function toast(text){
+    const el=$("#toast"); el.textContent=text; el.classList.add("show");
+    clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.remove("show"),800);
+  }
+
+  function burst(x,y,color="#ffd166",count=18){
+    for(let i=0;i<count;i++){
+      const a=Math.random()*Math.PI*2, speed=Math.random()*150+60;
+      particles.push({x,y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,r:Math.random()*4+2,life:1,color});
+    }
+  }
+
+  function answerAt(i){
+    if(!gameStarted||paused||lockAnswers) return;
+    fx.init(); lockAnswers=true;
+    const value=Number(answers[i].textContent);
+    if(value===question.answer){
+      answers[i].classList.add("correct"); fx.good();
+      streak++; const bonus=Math.min(streak,8)*5;
+      score += 100 + (level-1)*15 + bonus;
+      correctInLevel++;
+      burst(state.shipX,state.shipY-32,"#62f59a",22);
+      toast(streak>=3?`🔥 ${streak} in a row!`:"Correct! +"+(100+(level-1)*15+bonus));
+      repelMeteors();
+      if(correctInLevel>=5){
+        correctInLevel=0; level++; fx.level();
+        $("#levelBig").textContent=level; $("#levelUp").classList.remove("show");
+        void $("#levelUp").offsetWidth; $("#levelUp").classList.add("show");
+      }
+      setTimeout(nextQuestion,420);
+    }else{
+      answers[i].classList.add("wrong"); fx.bad(); streak=0; lives--; shake=10;
+      toast(`Oops! The answer was ${question.answer}`);
+      updateHUD();
+      if(lives<=0) setTimeout(endGame,520);
+      else setTimeout(nextQuestion,620);
+    }
+  }
+
+  function repelMeteors(){
+    meteors.forEach(m=>{
+      const dx=m.x-state.shipX, dy=m.y-state.shipY, d=Math.hypot(dx,dy)||1;
+      if(d<460){m.vx += dx/d*65; m.vy -= 110; m.spin*=1.25}
+    });
+  }
+
+  function spawnMeteor(){
+    const r=rand(12,28), x=rand(r,W-r), speed=35+level*7+Math.random()*35;
+    meteors.push({x,y:-r-10,r,vx:(Math.random()-.5)*30,vy:speed,rot:Math.random()*6.2,spin:(Math.random()-.5)*2.5,hits:0});
+  }
+
+  function drawMeteor(m){
+    ctx.save();ctx.translate(m.x,m.y);ctx.rotate(m.rot);
+    const g=ctx.createRadialGradient(-m.r*.3,-m.r*.35,2,0,0,m.r);
+    g.addColorStop(0,"#aab5c7");g.addColorStop(.42,"#6e7890");g.addColorStop(1,"#343a52");
+    ctx.fillStyle=g;ctx.beginPath();
+    const pts=9;
+    for(let i=0;i<pts;i++){
+      const a=i/pts*Math.PI*2, rr=m.r*(.83+Math.sin(i*4.7)*.08+Math.random()*0);
+      const x=Math.cos(a)*rr,y=Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)
+    }
+    ctx.closePath();ctx.fill();
+    ctx.fillStyle="rgba(26,30,46,.34)";
+    [[-.28,-.12,.18],[.25,.2,.13],[.12,-.35,.10]].forEach(c=>{ctx.beginPath();ctx.arc(c[0]*m.r*2,c[1]*m.r*2,m.r*c[2],0,7);ctx.fill()});
+    ctx.restore();
+  }
+
+  function drawShip(t){
+    state.shipBob=Math.sin(t*.004)*5;
+    const x=state.shipX,y=state.shipY+state.shipBob;
+    ctx.save();ctx.translate(x,y);
+
+    const shield=ctx.createRadialGradient(0,0,24,0,0,74);
+    shield.addColorStop(.55,"rgba(77,226,255,0)");
+    shield.addColorStop(.78,"rgba(77,226,255,.06)");
+    shield.addColorStop(.98,"rgba(77,226,255,.28)");
+    shield.addColorStop(1,"rgba(255,255,255,.65)");
+    ctx.fillStyle=shield;ctx.beginPath();ctx.arc(0,-4,72,0,Math.PI*2);ctx.fill();
+
+    ctx.fillStyle="rgba(77,226,255,.24)";
+    ctx.beginPath();ctx.moveTo(-17,40);ctx.lineTo(-6,83+Math.random()*7);ctx.lineTo(4,40);ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.moveTo(7,40);ctx.lineTo(13,78+Math.random()*8);ctx.lineTo(21,40);ctx.closePath();ctx.fill();
+
+    const body=ctx.createLinearGradient(-30,-40,30,45);body.addColorStop(0,"#f9fdff");body.addColorStop(.55,"#8de8ff");body.addColorStop(1,"#2793ca");
+    ctx.fillStyle=body;ctx.beginPath();ctx.moveTo(0,-55);ctx.quadraticCurveTo(30,-26,24,29);ctx.quadraticCurveTo(0,49,-24,29);ctx.quadraticCurveTo(-30,-26,0,-55);ctx.fill();
+    ctx.fillStyle="#7868ff";ctx.beginPath();ctx.moveTo(-22,15);ctx.lineTo(-48,39);ctx.lineTo(-19,35);ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.moveTo(22,15);ctx.lineTo(48,39);ctx.lineTo(19,35);ctx.closePath();ctx.fill();
+    const windowG=ctx.createRadialGradient(-7,-22,2,0,-13,22);windowG.addColorStop(0,"#eaffff");windowG.addColorStop(.35,"#51dbff");windowG.addColorStop(1,"#164e91");
+    ctx.fillStyle=windowG;ctx.beginPath();ctx.arc(0,-15,17,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=2;ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawPlanet(){
+    const x=W*.11,y=H*.28,r=Math.min(55,W*.08);
+    const g=ctx.createRadialGradient(x-r*.25,y-r*.25,4,x,y,r);
+    g.addColorStop(0,"#a8ffed");g.addColorStop(.55,"#2bbcc8");g.addColorStop(1,"#25548c");
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();
+    ctx.strokeStyle="rgba(155,123,255,.8)";ctx.lineWidth=Math.max(3,r*.08);
+    ctx.beginPath();ctx.ellipse(x,y,r*1.55,r*.38,-.24,0,7);ctx.stroke();
+  }
+
+  function update(dt,t){
+    if(!gameStarted||paused) return;
+    spawnClock += dt;
+    const spawnEvery = Math.max(.46,1.28-level*.055);
+    if(spawnClock>spawnEvery){spawnClock=0; if(meteors.length<12)spawnMeteor()}
+
+    for(let i=meteors.length-1;i>=0;i--){
+      const m=meteors[i];m.x+=m.vx*dt;m.y+=m.vy*dt;m.rot+=m.spin*dt;
+      const sy=state.shipY+state.shipBob;
+      if(Math.hypot(m.x-state.shipX,m.y-sy)<m.r+48){
+        fx.boom();shake=13;burst(m.x,m.y,"#ff7f66",28);meteors.splice(i,1);
+        lives--;streak=0;updateHUD();toast("Shield hit! ❤️ -1");
+        if(lives<=0){endGame();return}
+        continue;
+      }
+      if(m.y>H+60||m.x<-80||m.x>W+80)meteors.splice(i,1);
+    }
+
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=90*dt;p.life-=dt*1.5;
+      if(p.life<=0)particles.splice(i,1)
+    }
+  }
+
+  function render(t){
+    ctx.clearRect(0,0,W,H);
+    ctx.save();
+    if(shake>0){ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);shake*=.86;if(shake<.3)shake=0}
+    drawPlanet();
+    meteors.forEach(drawMeteor);
+    particles.forEach(p=>{
+      ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();ctx.globalAlpha=1;
+    });
+    if(gameStarted)drawShip(t);
+    ctx.restore();
+  }
+
+  function loop(t=0){
+    const dt=Math.min(.033,(t-lastTime)/1000||0);lastTime=t;
+    drawStars(t);update(dt,t);render(t);requestAnimationFrame(loop);
+  }
+
+  function startGame(){
+    fx.init();fx.click();
+    score=0;lives=3;level=1;streak=0;correctInLevel=0;meteors=[];particles=[];spawnClock=0;
+    gameStarted=true;running=true;paused=false;lockAnswers=false;
+    $("#startOverlay").classList.add("hidden");$("#gameOverOverlay").classList.add("hidden");$("#pauseOverlay").classList.add("hidden");
+    $("#pauseBtn").textContent="⏸";nextQuestion();updateHUD();
+  }
+
+  function endGame(){
+    if(!gameStarted)return;
+    gameStarted=false;running=false;paused=false;lockAnswers=true;
+    const key="mathMeteorBest";
+    let best=0;try{best=Number(localStorage.getItem(key)||0)}catch(e){}
+    if(score>best){best=score;try{localStorage.setItem(key,String(best))}catch(e){}}
+    $("#finalScore").textContent=score;$("#finalLevel").textContent=level;$("#bestScore").textContent=best;
+    $("#endMessage").textContent=score>=1500?"Amazing! You’re a Nova Guardian!":score>=700?"Great mission! Your math shield is strong.":"Nice try! Every mission makes you faster.";
+    $("#gameOverOverlay").classList.remove("hidden");
+  }
+
+  function togglePause(force){
+    if(!gameStarted)return;
+    paused = typeof force==="boolean" ? force : !paused;
+    $("#pauseOverlay").classList.toggle("hidden",!paused);
+    $("#pauseBtn").textContent=paused?"▶":"⏸";
+    if(!paused) lastTime=performance.now();
+  }
+
+  answers.forEach((b,i)=>b.addEventListener("click",()=>answerAt(i)));
+  $("#startBtn").addEventListener("click",startGame);
+  $("#restartBtn").addEventListener("click",startGame);
+  $("#pauseBtn").addEventListener("click",()=>togglePause());
+  $("#resumeBtn").addEventListener("click",()=>togglePause(false));
+  $("#soundBtn").addEventListener("click",()=>{
+    soundOn=!soundOn;$("#soundBtn").textContent=soundOn?"🔊":"🔇"; if(soundOn)fx.click();
+  });
+  $$("#difficulty button").forEach(btn=>btn.addEventListener("click",()=>{
+    fx.click();difficulty=btn.dataset.mode;$$("#difficulty button").forEach(x=>x.classList.toggle("active",x===btn));
+  }));
+
+  addEventListener("keydown",e=>{
+    if(["1","2","3","4"].includes(e.key)) answerAt(Number(e.key)-1);
+    if(e.key===" "||e.key==="Escape"){e.preventDefault();togglePause()}
+  });
+  document.addEventListener("visibilitychange",()=>{if(document.hidden&&gameStarted&&!paused)togglePause(true)});
+  addEventListener("resize",resize,{passive:true});
+
+  resize();requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
